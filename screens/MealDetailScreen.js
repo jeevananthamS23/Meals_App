@@ -8,12 +8,12 @@ import IconButton from "../Components/InconButton";
 import { useNavigation } from "@react-navigation/native";
 
 
-export default function MealDetailScreen({route,navigation}){
+export default function MealDetailScreen({route}){
     const MealId=route.params.Mealid;
     const selectedMeal=MEALS.find((meal)=>meal.id===MealId);
-    const navigation1=useNavigation();
+    const navigation=useNavigation();
     function headerButtonHandler(){
-        navigation1.navigate('MealsCategory');
+        navigation.navigate('MealsCategory');
     }
 
     
