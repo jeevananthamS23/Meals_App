@@ -3,27 +3,35 @@ import { MEALS } from "../data/dummy-data";
 import MealDetail from "../Components/MealDetail"; //reusable component
 import SubTitle from "../Components/MealDeatil/Subtitle"; // reusable component
 import List from "../Components/MealDeatil/List"; // reusable Components
-import { useEffect,useLayoutEffect } from "react";
+import { useContext, useEffect,useLayoutEffect } from "react";
 import IconButton from "../Components/InconButton";
 import { useNavigation } from "@react-navigation/native";
+import { FavoriteContext } from "../store/context/favorite-context";
 
 
 export default function MealDetailScreen({route}){
     const MealId=route.params.Mealid;
     const selectedMeal=MEALS.find((meal)=>meal.id===MealId);
     const navigation=useNavigation();
-    function headerButtonHandler(){
-        navigation.navigate('MealsCategory');
+    const Favoritedata=useContext(FavoriteContext);
+    const isFavorite=Favoritedata.ids.includes(MealId);
+    function FavoriteheaderButtonHandler(){
+          if(isFavorite){
+           Favoritedata.removeFavorite(MealId);
+          }
+          else{
+              Favoritedata.addFavorite(MealId);
+          }
     }
 
     
     useLayoutEffect(()=>{
              navigation.setOptions({
                 headerRight:()=>{
-                    return <IconButton icon={'home'} color={'white'} onPress={headerButtonHandler}/>
+                    return <IconButton icon={isFavorite?'star':'star-outline'} color={'white'} onPress={FavoriteheaderButtonHandler}/>
                 }
              })
-    },[navigation,headerButtonHandler])
+    },[navigation,FavoriteheaderButtonHandler])
 
 
 
